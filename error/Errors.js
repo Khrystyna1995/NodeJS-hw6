@@ -38,6 +38,10 @@ module.exports = {
         message: 'This user already exist',
         code: FORBIDDEN
     },
+    EXIST_CAR: {
+        message: 'This car already exist',
+        code: FORBIDDEN
+    },
     NOT_EXIST_USER: {
         message: 'This user is not exist',
         code: NO_CONTENT

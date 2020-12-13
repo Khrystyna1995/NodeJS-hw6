@@ -1,5 +1,5 @@
+const {findUserByParams} = require("../services/auth.service");
 const { compare } = require('../helpers/password.helper');
-const { findUserByParams } = require('../services/users.service');
 
 module.exports = async (req, res, next) => {
     try {

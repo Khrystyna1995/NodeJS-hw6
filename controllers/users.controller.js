@@ -1,4 +1,4 @@
-const { userService } = require('../services');
+const { usersService } = require('../services');
 const {CREATED, OK, BAD_REQUEST} = require('../configs/error-codes');
 const { hash } = require('../helpers/password.helper');
 
@@ -8,7 +8,7 @@ module.exports = {
             const password = await hash(req.body.password);
 
             Object.assign(req.body, {password});
-            await userService.createUser(req.body);
+            await usersService.createUser(req.body);
 
             res.sendStatus(CREATED);
         } catch (e) {
@@ -19,7 +19,7 @@ module.exports = {
 
     getUsers: async (req, res, next) => {
         try {
-            const users = await userService.getUsers();
+            const users = await usersService.getUsers();
 
             res.json(users);
         } catch (e) {
@@ -41,7 +41,7 @@ module.exports = {
     deleteUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
-            await userService.deleteUser(userId);
+            await usersService.deleteUser(userId);
 
             res.status(BAD_REQUEST).json('Deleted user');
         } catch (e) {

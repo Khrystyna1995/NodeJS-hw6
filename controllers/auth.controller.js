@@ -1,4 +1,4 @@
-const { SUCCESS } = require('../configs/error-codes');
+const { OK } = require('../configs/error-codes');
 
 module.exports = {
     authUser: async (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = {
 
             delete user.password;
 
-            res.status(SUCCESS).json(user);
+            res.status(OK).json(user);
         } catch (e) {
             next(e);
         }
