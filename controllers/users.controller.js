@@ -1,5 +1,5 @@
 const { userService } = require('../../services');
-const {CREATED_USER, DELETED_USER, REQUESTED_USER} = require("../../error/Errors");
+const {CREATED_USER, DELETED_USER, REQUESTED_USER} = require("../error/Errors");
 
 module.exports = {
     createUser: async (req, res, next) => {

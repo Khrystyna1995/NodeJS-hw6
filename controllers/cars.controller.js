@@ -1,5 +1,5 @@
 const { carService }  = require('../../services');
-const {CREATED_CAR, DELETED_CAR, REQUESTED_CAR} = require("../../error/Errors");
+const {CREATED_CAR, DELETED_CAR, REQUESTED_CAR} = require("../error/Errors");
 
 module.exports = {
     createCar: async (req, res, next) => {
