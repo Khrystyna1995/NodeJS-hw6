@@ -1,4 +1,5 @@
-const { carService } = require('../../services');
+const {ErrorHandler} = require("../error");
+const { carService } = require('../services');
 const {EXIST_CAR} = require("../error/Errors");
 
 module.exports = {
@@ -7,10 +8,10 @@ module.exports = {
             const car = await carService.getCars();
 
             if(car) {
-                throw new Error('This car already exist');
+                throw new ErrorHandler(EXIST_CAR.message, EXIST_CAR.code);
             }
 
-            res.status(EXIST_CAR.code).json(EXIST_CAR.message);
+            next()
         } catch (e) {
             next(e);
         }

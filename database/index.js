@@ -12,7 +12,7 @@ module.exports = (() => {
         });
 
         const models = {};
-        const modelsPath = path.join(process.cwd(), 'dataBase', 'models');
+        const modelsPath = path.join(process.cwd(), 'database', 'models');
 
         const getModels = () => {
             fs.readdir(modelsPath, (err, files) => {

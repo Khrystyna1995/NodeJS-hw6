@@ -42,6 +42,10 @@ module.exports = {
         message: 'This user is not exist',
         code: NO_CONTENT
     },
+    WRONG_DATA:{
+        message: 'Wrong password',
+        code: BAD_REQUEST
+    }
 
 
 };

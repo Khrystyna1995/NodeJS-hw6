@@ -11,18 +11,26 @@ app.use(express.urlencoded({ extended: true} ));
 
 app.use(express.static(path.join(process.cwd(), 'views')));
 
-const { userRouter } = require('./routes');
+const { usersRouter, carsRouter, authRouter } = require('./routes');
+
 
 // USERS
-app.use('/users', userRouter);
+app.use('/users', usersRouter);
+
+// CARS
+app.use('/cars', carsRouter);
+
+//AUTH
+app.use('/auth', authRouter);
 
 // ERROR
-app.use('*', (err, req, res) => {
+app.use('*', (err, req, res, next) => {
     res.status(err.code).json({
         message: err.message,
         ok: false
     })
 });
+
 
 app.listen(5000, () => {
     console.log('App listen 5000');

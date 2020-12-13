@@ -1,17 +1,18 @@
-const { userService } = require('../../services');
-const {EXIST_USER, NOT_EXIST_USER} = require("../error/Errors");
+const {ErrorHandler} = require("../error");
+const { userService } = require('../services');
+const { EXIST_USER, NOT_EXIST_USER } = require("../error/Errors");
 
 module.exports = {
     checkIsUserRegistered: async (req, res, next) => {
         try{
             const { email } = req.body;
-            const [user] = await userService.getUsers({email}, 1);
+            const [user] = await userService.getUsers({email});
 
             if(user) {
-                throw new Error('This user already exist');
+                throw new ErrorHandler(EXIST_USER.message, EXIST_USER.code);
             }
 
-            res.status(EXIST_USER.code).json(EXIST_USER.message);
+            next();
         } catch (e) {
             next(e);
         }
@@ -24,11 +25,11 @@ module.exports = {
 
 
             if(!user) {
-                throw new Error('This user is not exist');
+                throw new ErrorHandler(NOT_EXIST_USER.message, NOT_EXIST_USER.code);
             }
 
             req.user = user;
-            res.status(NOT_EXIST_USER.code).json(NOT_EXIST_USER.message);
+            next();
         } catch (e) {
             next(e);
         }

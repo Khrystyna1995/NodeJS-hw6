@@ -1,12 +1,12 @@
-const { carService }  = require('../../services');
-const {CREATED_CAR, DELETED_CAR, REQUESTED_CAR} = require("../error/Errors");
+const { carService }  = require('../services');
+const {CREATED, OK, BAD_REQUEST } = require("../configs/error-codes");
 
 module.exports = {
     createCar: async (req, res, next) => {
         try {
-            await carService.createCar(req.body);
+           const car = await carService.createCar({...req.body});
 
-            res.status(CREATED_CAR.code).json(CREATED_CAR.message);
+            res.status(CREATED.code).json(car);
         } catch (e) {
             next(e);
         }
@@ -15,12 +15,9 @@ module.exports = {
 
     getCars: async (req, res, next) => {
         try {
-            const { limit, page = 1, ...where } = req.query;
-            const offset = limit * (page - 1);
+            const cars = await carService.getCars();
 
-            await carService.getCars(where, limit, offset );
-
-            res.status(REQUESTED_CAR.code).json(REQUESTED_CAR.message);
+            res.status(OK).json(cars);
         } catch (e) {
             next(e);
         }
@@ -32,7 +29,7 @@ module.exports = {
             const { carId } = req.params;
             await carService.getUserById(carId);
 
-            res.status(REQUESTED_CAR.code).json(REQUESTED_CAR.message);
+            res.status(OK);
         } catch (e) {
             next(e);
         }
@@ -43,7 +40,7 @@ module.exports = {
             const { carId } = req.params;
             await carService.deleteCar(carId);
 
-            res.status(DELETED_CAR.code).json(DELETED_CAR.message);
+            res.status(BAD_REQUEST).json('Deleted car');
         } catch (e) {
             next(e);
         }

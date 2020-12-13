@@ -1,13 +1,16 @@
-const {NOT_VALID_ID, NOT_VALID_BODY} = require("../../error/Errors");
-const {ErrorHandler} = require("../../error");
+const { ErrorHandler } = require('../../error');
+const { BAD_REQUEST } = require('../../configs/error-codes');
+const { userValidator, carValidator } = require('../../validators');
 
 module.exports = {
     checkUserIdValid: (req, res, next) =>{
         try {
             const { id } = req.params;
 
-            if (!id || id <= 0 || !Number.isInteger(+id)) {
-                throw new ErrorHandler(NOT_VALID_ID.message, NOT_VALID_ID.code);
+            const { error } = userValidator.validate(id);
+
+            if (error) {
+                throw new ErrorHandler(error.details[0].message, BAD_REQUEST);
             }
 
             next();
@@ -18,22 +21,10 @@ module.exports = {
 
     checkUserValid: (req, res, next) => {
         try {
-            const { email, name, password, ...other } = req.body;
+            const { error } = userValidator.validate(req.body);
 
-            if (!email && email.length < 7) {
-                throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
-            }
-
-            if (!name && name.length < 2) {
-                throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
-            }
-
-            if (password && password.length < 8) {
-                throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
-            }
-
-            if (Object.values(other).length) {
-                throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
+            if (error) {
+                throw new ErrorHandler(error.details[0].message, BAD_REQUEST);
             }
 
             next();
@@ -47,13 +38,30 @@ module.exports = {
         try {
             const { id } = req.params;
 
-            if (!id || id <= 0 || !Number.isInteger(+id)) {
-                throw new ErrorHandler(NOT_VALID_ID.message, NOT_VALID_ID.code);
+            const { error } = carValidator.validate(id);
+
+            if (error) {
+                throw new ErrorHandler(error.details[0].message, BAD_REQUEST);
             }
 
             next();
         } catch (e) {
             next(e);
         }
+    },
+
+    checkCarModelValid: (req, res, next) => {
+        try {
+            const { error } = carValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(error.details[0].message, BAD_REQUEST);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+
     },
 }
