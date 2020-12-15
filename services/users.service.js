@@ -18,6 +18,17 @@ module.exports = {
         });
     },
 
+    updateUser: (userId, newUser, newPassword) => {
+        const User = database.getModel('User');
+
+        return User.update({
+            name: newUser.name,
+            email: newUser.email,
+            password: newPassword
+        },
+            {where : { id: userId} });
+    },
+
     getUserById: (userId) => {
         const User = database.getModel('User');
         const Car = database.getModel('Car');

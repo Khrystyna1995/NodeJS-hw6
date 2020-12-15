@@ -1,4 +1,5 @@
-const { usersService } = require('../services');
+const {updateUser} = require("../services/users.service");
+const {usersService}  = require('../services');
 const {CREATED, OK, BAD_REQUEST} = require('../configs/error-codes');
 const { hash } = require('../helpers/password.helper');
 
@@ -36,6 +37,22 @@ module.exports = {
         } catch (e) {
             next(e);
         }
+    },
+
+    updateUser: async (req, res, next) => {
+        try {
+            const { user } = req.body;
+            const newPassword = await hash(req.body.password);
+            const UserId = req.params.id;
+
+            const updated = await updateUser(UserId, user, newPassword);
+
+            res.status(OK).json(updated);
+        } catch (e) {
+            next(e);
+        }
+
+
     },
 
     deleteUser: async (req, res, next) => {

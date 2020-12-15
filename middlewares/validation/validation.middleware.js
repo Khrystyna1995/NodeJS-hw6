@@ -1,6 +1,6 @@
 const { ErrorHandler } = require('../../error');
 const { BAD_REQUEST } = require('../../configs/error-codes');
-const { userValidator, carValidator } = require('../../validators');
+const { userValidator, updateValidator, carValidator } = require('../../validators');
 
 module.exports = {
     checkUserIdValid: (req, res, next) =>{
@@ -32,6 +32,20 @@ module.exports = {
             next(e);
         }
 
+    },
+
+    checkUserUpdateValid: async (req, res, next) => {
+        try {
+            const { error } = updateValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(error.details[0].message, BAD_REQUEST);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
     },
 
     checkCarIdValid: async (req, res, next) => {
